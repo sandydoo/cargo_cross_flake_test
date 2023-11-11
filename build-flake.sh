@@ -1,1 +1,1 @@
-nix develop --impure --command bash -c "./build.sh"
+nix develop .#devenv --impure --command bash -c "./build.sh"
