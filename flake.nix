@@ -48,10 +48,6 @@
           cargo-cross
           toolchain
         ];
-
-        shellHook = ''
-          export RUST_SRC_PATH="${toolchain}/lib/rustlib/src/rust/library"
-        '';
       };
 
       devenv =
@@ -59,19 +55,19 @@
 	  pkgs = nixpkgs.legacyPackages.${system};
 	  cargo-cross = mkCargoCross pkgs;
 	  toolchain = 
-          # fenix.packages.${system}.fromToolchainFile {
-          #   file = ./toolchain.toml;
-	  #   sha256 = "sha256-0d/UxN6sekF+iQtebQl6jj/AQiT18Uag3CKbsCxc1E0=";
-          # };
+            fenix.packages.${system}.fromToolchainFile {
+              file = ./toolchain.toml;
+	      sha256 = "sha256-0d/UxN6sekF+iQtebQl6jj/AQiT18Uag3CKbsCxc1E0=";
+            };
 
-          (with fenix.packages.${system}; 
-            combine [ latest.rustc latest.cargo latest.rust-src targets.x86_64-pc-windows-gnu.latest.rust-std ]);
+          # (with fenix.packages.${system}; 
+          #   combine [ latest.rustc latest.cargo latest.rust-src targets.x86_64-pc-windows-gnu.latest.rust-std ]);
 	in devenv.lib.mkShell {
         inherit inputs pkgs;
         modules = [{
-          packages = with pkgs; [ 
-            rustup
-            docker
+          packages = [ 
+            pkgs.rustup
+            pkgs.docker
             cargo-cross
 	    toolchain
           ];
@@ -80,9 +76,6 @@
           languages.rust.components = [];
           languages.rust.toolchain = pkgs.lib.mkForce toolchain;
           env.RUST_BACKTRACE = "1";
-	  enterShell = ''
-	    export RUST_SRC_PATH="${toolchain}/lib/rustlib/src/rust/library"
-	  '';
         }];
       };
     };
