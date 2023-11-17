@@ -57,10 +57,6 @@
           cargo-cross = mkCargoCross pkgs;
           toolchain = fenix.packages.${system}.fromToolchainFile {
             file = ./toolchain.toml;
-            sha256 =
-              if system == "x86_64_linux"
-              then "sha256-0d/UxN6sekF+iQtebQl6jj/AQiT18Uag3CKbsCxc1E0="
-              else "sha256-iO9RjucunishecHEk6gifAyaP8nFlrFIBfIhh0RBLvc=";
           };
           # (with fenix.packages.${system};
           #   combine [ latest.rustc latest.cargo latest.rust-src targets.x86_64-pc-windows-gnu.latest.rust-std ]);
